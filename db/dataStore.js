@@ -22,7 +22,7 @@ class DataStore {
         return writeFileAsync('db/db.json', JSON.stringify(allNotes))
     }
 
-    addNote(note) {
+    async addNote(note) {
         const { title, text } = note
     
         if (!title || !text) {
@@ -40,5 +40,15 @@ class DataStore {
             
         // Return the new note
         return newNote
-      }
+    }
+
+    async removeNote(note_id) {
+        const existingNotes = await this.getNotes()
+
+        // Keep notes that don't have the id of 'note_id'
+        const filteredNotes = existingNotes.filter((note) => note.id !== note_id)
+
+        // Write the filtered notes to the DB, and return.
+        return this.write(filteredNotes)
+    }
 }
