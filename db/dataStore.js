@@ -18,10 +18,20 @@ class DataStore {
         return readFileAsync('db/db.json', 'utf8')  
     }
 
+    /**
+     * Writes all notes to the database.
+     * @param {Array | Object} allNotes an Array of notes or a single note object.
+     * @returns a copy of the writen database
+     */
     write(allNotes) {
         return writeFileAsync('db/db.json', JSON.stringify(allNotes))
     }
 
+    /**
+     * Adds the passed in note to the database, assigning it a UUID in the process.
+     * @param {Object} note to be added to database
+     * @returns a copy of the note object
+     */
     async addNote(note) {
         const { title, text } = note
     
@@ -42,6 +52,11 @@ class DataStore {
         return newNote
     }
 
+    /**
+     * Removes a note from the database, by matching its ID.
+     * @param {String} note_id The UUID of the note to be removed
+     * @returns a copy of the database with the note removed.
+     */
     async removeNote(note_id) {
         const existingNotes = await this.getNotes()
 
@@ -50,5 +65,22 @@ class DataStore {
 
         // Write the filtered notes to the DB, and return.
         return this.write(filteredNotes)
+    }
+
+    /**
+     * Gets a list of all notes in the database.
+     * @returns an array of note objects.
+     */
+    async getNotes() {
+        const notesString = await this.read()
+
+        let parsedNotes
+        try {
+            parsedNotes = [].concat(JSON.parse(notesString));
+        } catch (error) {
+            parsedNotes = [];
+        }
+
+        return parsedNotes
     }
 }
