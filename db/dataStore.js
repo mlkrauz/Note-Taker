@@ -1,6 +1,6 @@
 const util = require('util')
 const fs = require('fs')
-const uuidv1 = require('uuid/v1')
+const {v1: uuidv1} = require('uuid')
 
 // Promisfy the reading and writing of files.
 const readFileAsync = util.promisify(fs.readFile)
@@ -63,8 +63,10 @@ class DataStore {
         // Keep notes that don't have the id of 'note_id'
         const filteredNotes = existingNotes.filter((note) => note.id !== note_id)
 
+        this.write(filteredNotes)
+
         // Write the filtered notes to the DB, and return.
-        return this.write(filteredNotes)
+        return filteredNotes
     }
 
     /**
@@ -84,3 +86,5 @@ class DataStore {
         return parsedNotes
     }
 }
+
+module.exports = new DataStore()

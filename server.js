@@ -11,7 +11,7 @@ const PORT = 3002
 //use middleware
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use(express.static('./public/'))
+app.use(express.static('public'))
 
 //use routes
 app.use('/', htmlRoutes)
