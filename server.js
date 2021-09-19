@@ -6,7 +6,7 @@ const htmlRoutes = require('./routes/htmlroutes')
 const app = express()
 
 //set port
-const PORT = 3002
+const PORT = process.env.PORT || 3001
 
 //use middleware
 app.use(express.urlencoded({ extended: true }))
